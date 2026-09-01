@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package StoreAPI;
+
+message EchoRequest {
+  string s = 1;
+  int32 n = 2;
+}
+
+message EchoReply {
+  string s = 1;
+}
+
+service StoreService {
+  rpc get_echo (EchoRequest)
+    returns (EchoReply);
+}
