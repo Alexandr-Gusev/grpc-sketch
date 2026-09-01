@@ -1,0 +1,4 @@
+protobuf==7.36.0
+grpcio-tools==1.83.1
+grpcio==1.83.1
+debugpy==1.8.20

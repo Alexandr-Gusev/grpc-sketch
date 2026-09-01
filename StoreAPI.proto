@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+package StoreAPI;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+service StoreService {
+  rpc orderCreate (OrderCreateRequest) returns (Order);
+  rpc orderDelete (OrderDeleteRequest) returns (google.protobuf.Empty);
+  rpc orderList (OrderListRequest) returns (OrderList);
+}
+
+enum Language {
+  en = 0;
+  ru = 1;
+}
+
+message Empty {
+  Language language = 1;
+}
+
+enum OrderStatus {
+  UNKNOWN = 0;
+  DRAFT = 1;
+  CONFIRMED = 2;
+  CANCELLED = 3;
+}
+
+message OrderItem {
+  string id = 1;
+  uint32 count = 2;
+}
+
+message OrderCreate {
+  string phone = 1;
+  string deliveryAddress = 2;
+  repeated OrderItem items = 3;
+}
+
+message Order {
+  string orderId = 1;
+  uint32 orderVer = 2;
+  OrderStatus status = 3;
+  google.protobuf.Timestamp createdAt = 4;
+  string phone = 5;
+  string deliveryAddress = 6;
+  repeated OrderItem items = 7;
+}
+
+message OrderCreateRequest {
+  Language language = 1;
+  string idempotencyKey = 2;
+  OrderCreate order = 3;
+}
+
+message OrderDeleteRequest {
+  Language language = 1;
+  string orderId = 2;
+}
+
+message OrderListRequest {
+  Language language = 1;
+  uint32 limit = 2;
+  string cursor = 3;
+  OrderStatus status = 4;
+  string orderId = 5;
+}
+
+message OrderList {
+  string cursor = 1;
+  repeated Order items = 2;
+}
